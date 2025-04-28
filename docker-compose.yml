@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   app:
+    container_name: memorygraph_backend
     build: .
     ports:
       - "8000:8000"
@@ -12,6 +13,19 @@ services:
     restart: unless-stopped
     networks:
       - app-network
+
+  arangodb:
+    image: arangodb/arangodb:3.12.4 
+    container_name: arangodb
+    ports:
+      - "8529:8529"
+    environment:
+      - ARANGO_ROOT_PASSWORD=root
+    volumes:
+      - arangodb_data:/var/lib/arangodb
+    networks:
+      - app-network
+    restart: unless-stopped
 
   nginx:
     build: 
@@ -27,6 +41,11 @@ services:
     environment:
       - VIRTUAL_HOST=www.memorygraph.alenkoikkara.com
       - LETSENCRYPT_HOST=www.memorygraph.alenkoikkara.com
+
+volumes:
+  arangodb_data:
+  nginx_data:
+  memorygraph_backend_data:
 
 networks:
   app-network:

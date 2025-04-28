@@ -24,6 +24,9 @@ services:
     restart: unless-stopped
     networks:
       - app-network
+    environment:
+      - VIRTUAL_HOST=www.memorygraph.alenkoikkara.com
+      - LETSENCRYPT_HOST=www.memorygraph.alenkoikkara.com
 
 networks:
   app-network:

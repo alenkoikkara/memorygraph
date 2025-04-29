@@ -1,26 +1,25 @@
 from fastapi import APIRouter
 from typing import Dict
 from models.content import ContentInput
-from models.record import Record
-from services.record_service import RecordService
+from core.core import Record, create_record
 
 router = APIRouter()
 
-@router.get("/", response_model=Dict[str, str])
-async def read_root() -> Dict[str, str]:
-    """Root endpoint returning a simple greeting."""
-    return {"Hello": "World"}
+@router.get("/")
+async def root() -> Dict[str, str]:
+    """Root endpoint that returns a simple greeting."""
+    return {"message": "Welcome to Memory Graph API"}
 
-@router.put("/api/v1/process", response_model=Record)
-async def process_content(input: ContentInput) -> Record:
+@router.put("/process")
+async def process_content(content: ContentInput) -> Record:
     """
-    Process content (URL or text) and return a record with analysis.
+    Process content and return a record with summary, keywords, and title.
     
     Args:
-        input: ContentInput containing either URL or text content
+        content: ContentInput object containing either URL or text content
         
     Returns:
-        Record: Processed record containing summary, keywords, and metadata
+        Record: Processed record containing summary, keywords, and title
     """
-    original, content = input.get_content()
-    return RecordService.create_record(original, content) 
+    processed_content = content.get_content()
+    return create_record(content.content, processed_content) 

@@ -1,7 +1,7 @@
 import cohere
 import json
 
-co = cohere.Client("l8TM7tpRohn5DrsdxXQEI54zTAJQHuxLxPxkqgqE")
+co = cohere.ClientV2("l8TM7tpRohn5DrsdxXQEI54zTAJQHuxLxPxkqgqE")
 
 def generate_keywords(text: str) -> dict:
     response = co.generate(
@@ -33,6 +33,16 @@ def generate_keywords(text: str) -> dict:
         # Return a default response in case of parsing error
         return {
             "summary": "Error generating summary",
-            "keywords": []
+            "keywords": [],
+            "title": "Error generating title"
         }
 
+def generate_embedding(text: str) -> list[float]:
+    response = co.embed(
+        texts=[text],
+        model="embed-v4.0",
+        input_type="classification",
+        embedding_types=["float"],
+        output_dimension=512,
+      )
+    return response.embeddings.float[0]

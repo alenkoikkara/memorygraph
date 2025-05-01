@@ -3,11 +3,13 @@ version: '3.8'
 services:
   app:
     container_name: memorygraph_backend
-    build: .
+    build: 
+      context: ./server
+      dockerfile: Dockerfile
     ports:
       - "8001:8001"
     volumes:
-      - .:/app
+      - ./server:/app
     environment:
       - PYTHONUNBUFFERED=1
       - CHROMA_HOST=chromadb

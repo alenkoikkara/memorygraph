@@ -1,0 +1,67 @@
+from arango import ArangoClient
+import os
+from dotenv import load_dotenv
+from models.record import Record
+import chromadb
+# Load environment variables
+load_dotenv()
+
+# Get ArangoDB configuration from environment variables
+CHROMA_HOST = os.getenv("CHROMA_HOST", "chromadb")  # Default to service name in Docker
+CHROMA_PORT = os.getenv("CHROMA_PORT", "8000") # Convert to integer
+
+chroma_client = chromadb.HttpClient(host=CHROMA_HOST, port=int(CHROMA_PORT))
+chroma_client.heartbeat()
+collection = None
+
+def initialize_chroma():
+    """
+    Initialize the database and ensure the collection exists.
+    """
+    global collection
+    collection = chroma_client.get_or_create_collection(name="documents")
+    print("Chroma initialized")
+    return collection
+
+
+def add_document(embedding, title, summary, content, created_at, tags):
+    # Combine summary and tags for embedding text
+
+    # Use title (or any unique string) as the document ID
+    doc_id = title.lower().replace(" ", "_")
+    # Add the document, its embedding, and metadata to ChromaDB
+    collection.add(
+        ids=[doc_id],
+        documents=[content],
+        embeddings=[embedding],
+        metadatas=[{
+            "title": title,
+            "created_at": created_at,
+            "summary": summary
+        }]
+    )
+    
+def semantic_search(embedding, n_results=5):
+    # Query ChromaDB for nearest neighbors by embedding
+    results = collection.query(
+        query_embeddings=[embedding],
+        n_results=n_results
+    )
+    # Collect and return matching documents with metadata and distance
+    matches = []
+    for doc, metadata, dist in zip(
+            results["documents"][0],
+            results["metadatas"][0],
+            results["distances"][0]
+    ):
+        matches.append({
+            "document": doc,
+            "title": metadata.get("title"),
+            "created_at": metadata.get("created_at"),
+            "tags": metadata.get("tags"),
+            "summary": metadata.get("summary"),
+            "distance": dist
+        })
+    # Results are sorted by increasing distance (i.e. most similar first)
+    return matches
+

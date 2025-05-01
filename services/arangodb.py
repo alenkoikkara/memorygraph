@@ -47,8 +47,12 @@ def create_graph(name: str):
     Create a graph in the database.
     """
     try:
-        graph = db.create_graph(name)
-        return graph
+        if not db.has_graph(name):
+            graph = db.create_graph(name)
+            return graph
+        else:
+            graph = db.graph(name)
+            return graph
     except Exception as e:  
         print(f"Error creating graph: {str(e)}")
         raise

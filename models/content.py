@@ -28,3 +28,7 @@ class ContentInput(BaseModel):
         else:
             brief = self.content[:100] + "..." if len(self.content) > 100 else self.content
             return brief, self.content 
+        
+class SearchQuery(BaseModel):
+    """Model for handling search query input."""
+    query: str

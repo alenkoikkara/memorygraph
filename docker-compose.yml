@@ -5,14 +5,18 @@ services:
     container_name: memorygraph_backend
     build: .
     ports:
-      - "8000:8000"
+      - "8001:8001"
     volumes:
       - .:/app
     environment:
       - PYTHONUNBUFFERED=1
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
     restart: unless-stopped
     networks:
       - app-network
+    depends_on:
+      - chromadb
 
   arangodb:
     image: arangodb/arangodb:3.12.4 
@@ -42,10 +46,26 @@ services:
       - VIRTUAL_HOST=www.memorygraph.alenkoikkara.com
       - LETSENCRYPT_HOST=www.memorygraph.alenkoikkara.com
 
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: chromadb
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/chroma
+    environment:
+      - ALLOW_RESET=true
+      - ANONYMIZED_TELEMETRY=false
+      - PERSIST_DIRECTORY=/chroma
+    networks:
+      - app-network
+    restart: unless-stopped
+
 volumes:
   arangodb_data:
   nginx_data:
   memorygraph_backend_data:
+  chroma_data:
 
 networks:
   app-network:

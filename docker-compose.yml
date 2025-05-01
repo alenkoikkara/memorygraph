@@ -57,11 +57,23 @@ services:
       - chroma_data:/chroma
     environment:
       - ALLOW_RESET=true
+      - IS_PERSISTENT=true
       - ANONYMIZED_TELEMETRY=false
       - PERSIST_DIRECTORY=/chroma
     networks:
       - app-network
     restart: unless-stopped
+
+  ui:
+    container_name: memorygraph_ui
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    networks:
+      - app-network
 
 volumes:
   arangodb_data:

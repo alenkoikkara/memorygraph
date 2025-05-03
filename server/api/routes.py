@@ -10,7 +10,7 @@ async def root() -> Dict[str, str]:
     """Root endpoint that returns a simple greeting."""
     return {"message": "Welcome to Memory Graph API"}
 
-@router.put("/process")
+@router.put("/api/process")
 async def process_content(content: ContentInput) -> Record:
     """
     Process content and return a record with summary, keywords, and title.
@@ -24,7 +24,7 @@ async def process_content(content: ContentInput) -> Record:
     processed_content = content.get_content()
     return create_record(content.content, processed_content) 
 
-@router.get("/search")
+@router.get("/api/search")
 async def search(
     query: str = Query(..., description="The search query to find relevant documents")
 ):

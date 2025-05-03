@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from models.record import Record
 import chromadb
+from datetime import datetime
 # Load environment variables
 load_dotenv()
 
@@ -55,13 +56,14 @@ def semantic_search(embedding, n_results=5):
             results["distances"][0]
     ):
         matches.append({
-            "document": doc,
+            "url": doc,
             "title": metadata.get("title"),
-            "created_at": metadata.get("created_at"),
+            "created_at": datetime.fromisoformat(metadata.get("created_at")).strftime("%Y-%m-%d %H:%M:%S"),
             "tags": metadata.get("tags"),
             "summary": metadata.get("summary"),
             "distance": dist
         })
     # Results are sorted by increasing distance (i.e. most similar first)
+    matches.sort(key=lambda x: x["distance"])
     return matches
 

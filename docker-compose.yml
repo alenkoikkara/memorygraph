@@ -41,12 +41,12 @@ services:
       - "80:80"
     depends_on:
       - app
+      - ui
     restart: unless-stopped
     networks:
       - app-network
-    environment:
-      - VIRTUAL_HOST=www.memorygraph.alenkoikkara.com
-      - LETSENCRYPT_HOST=www.memorygraph.alenkoikkara.com
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
 
   chromadb:
     image: chromadb/chroma:latest

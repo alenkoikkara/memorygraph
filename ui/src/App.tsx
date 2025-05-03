@@ -26,7 +26,7 @@ function App() {
 
         <main className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <Routes>
-            <Route path="/" element={<Navigate to="/web/search" replace />} />
+            <Route path="/web" element={<Navigate to="/web/search" replace />} />
             <Route path="/web/search" element={<SearchPage />} />
           </Routes>
         </main>

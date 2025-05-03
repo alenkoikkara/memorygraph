@@ -1,0 +1,11 @@
+{
+  "name": "memory-graph-saver-extension",
+  "version": "1.0.0",
+  "description": "Chrome extension for saving URLs to Memory Graph",
+  "scripts": {
+    "generate-icons": "node generate-icons.js"
+  },
+  "dependencies": {
+    "sharp": "^0.33.2"
+  }
+} 

@@ -29,7 +29,8 @@ def create_app() -> FastAPI:
         "http://localhost:5173",  # Local development alternative
         "http://localhost",  # Local development alternative
         "https://memorygraph.alenkoikkara.com",  # Production domain
-        "https://www.memorygraph.alenkoikkara.com"  # Production domain with www
+        "https://www.memorygraph.alenkoikkara.com",  # Production domain with www
+        "chrome-extension://fmlccacimliaejecjkkhegmfmhgnfkok"  # Specific Chrome extension ID
     ]
     
     app.add_middleware(

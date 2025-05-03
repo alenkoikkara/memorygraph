@@ -21,7 +21,7 @@ const SearchPage = () => {
     <div className="h-screen w-full flex flex-col items-center justify-center">
       <div className="w-full max-w-md relative">
         <SearchBar onSearch={handleSearch} />
-        <div className="mt-4 w-full flex flex-col gap-4 absolute top-10 left-0">
+        <div className="mt-4 px-2 w-full flex flex-col gap-4 absolute top-10 left-0">
           {searchResults.map((result: SearchResult) => (
             <div
               key={result.created_at}
@@ -30,10 +30,10 @@ const SearchPage = () => {
                 window.open(result.url, "_blank");
               }}
             >
-              <h2 className="text-lg font-bold">{result.title}</h2>
+              <h2 className="text-md font-bold">{result.title}</h2>
               <p className="text-xs text-gray-500">{result.created_at}</p>
-              <p className="text-sm text-gray-500 line-clamp-2">{result.summary}</p>
-              <p className="text-sm text-gray-500">{result.content}</p>
+              <p className="text-xs text-gray-500 line-clamp-2">{result.summary}</p>
+              <p className="text-xs text-gray-500">{result.content}</p>
             </div>
           ))}
         </div>

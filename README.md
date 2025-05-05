@@ -1,19 +1,61 @@
-# FastAPI Content Processing Application
+# Memory Graph
 
-A FastAPI-based application that processes content, supporting both URL and text input. The application can extract main content from URLs or process direct text input.
+A full-stack application for processing, storing, and searching content with semantic search capabilities. The application consists of a FastAPI backend, React frontend, Chrome extension, and uses ChromaDB for vector storage.
 
 ## Features
 
-- URL content extraction
-- Text content processing
-- RESTful API endpoints
-- Docker containerization support
+- **Content Processing**
+  - URL content extraction with intelligent text parsing
+  - Direct text input processing
+  - Automatic content summarization and keyword extraction
+
+- **Semantic Search**
+  - Vector-based semantic search using ChromaDB
+  - Pagination support for search results
+  - Debounced search input for better performance
+
+- **Chrome Extension**
+  - One-click URL saving
+  - Seamless integration with the backend API
+  - User-friendly popup interface
+
+- **Modern Web Interface**
+  - Responsive design with Tailwind CSS
+  - Client-side routing with React Router
+  - Debounced search functionality
+  - Clean and intuitive user interface
+
+## Architecture
+
+The application is built using a microservices architecture with the following components:
+
+- **Backend (FastAPI)**
+  - RESTful API endpoints
+  - Content processing and storage
+  - Semantic search functionality
+  - CORS support for cross-origin requests
+
+- **Frontend (React)**
+  - Modern UI with Tailwind CSS
+  - Client-side routing
+  - Responsive design
+  - API integration
+
+- **Chrome Extension**
+  - Browser integration
+  - URL saving functionality
+  - User-friendly interface
+
+- **Database**
+  - ChromaDB for vector storage
+  - ArangoDB for document storage
 
 ## Prerequisites
 
-- Python 3.11 or higher
 - Docker and Docker Compose
-- pip (Python package manager)
+- Node.js 20 or higher
+- Python 3.11 or higher
+- Chrome browser (for extension)
 
 ## Installation
 
@@ -30,12 +72,18 @@ cd <repository-directory>
 docker-compose up --build
 ```
 
-The application will be available at `http://localhost:8000`
+The application will be available at:
+- Frontend: `http://localhost`
+- Backend API: `http://localhost/api`
+- API Documentation: `http://localhost/docs`
 
 ### Manual Installation
 
+#### Backend
+
 1. Create a virtual environment:
 ```bash
+cd server
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 ```
@@ -50,33 +98,64 @@ pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
+#### Frontend
+
+1. Install dependencies:
+```bash
+cd ui
+npm install
+```
+
+2. Run the development server:
+```bash
+npm run dev
+```
+
+#### Chrome Extension
+
+1. Open Chrome and navigate to `chrome://extensions/`
+2. Enable "Developer mode"
+3. Click "Load unpacked" and select the `chrome-extension` directory
+
 ## API Endpoints
 
-### GET /
-- Description: Health check endpoint
-- Response: `{"Hello": "World"}`
+### Content Processing
+- `PUT /api/process`
+  - Process content (URL or text)
+  - Request Body:
+  ```json
+  {
+      "content": "https://example.com"  // or any text content
+  }
+  ```
 
-### PUT /api/v1/process
-- Description: Process content (URL or text)
-- Request Body:
-```json
-{
-    "content": "https://example.com"  // or any text content
-}
-```
-- Response: Processed record with extracted content
+### Search
+- `GET /api/search`
+  - Search content with semantic search
+  - Query Parameters:
+    - `query`: Search query string
+    - `page`: Page number (default: 1)
+    - `limit`: Results per page (default: 10)
 
-## Development
+## Project Structure
 
-The project structure:
 ```
 .
-├── core/           # Core application logic
-├── services/       # Service implementations
-├── database/       # Database related files
-├── main.py         # Application entry point
-├── requirements.txt # Project dependencies
-└── Dockerfile      # Container configuration
+├── server/           # FastAPI backend
+│   ├── api/         # API routes and endpoints
+│   ├── core/        # Core application logic
+│   ├── services/    # Service implementations
+│   └── models/      # Data models
+├── ui/              # React frontend
+│   ├── src/         # Source code
+│   ├── public/      # Static assets
+│   └── dist/        # Build output
+├── chrome-extension/ # Chrome extension
+│   ├── popup.html   # Extension popup
+│   ├── popup.js     # Extension logic
+│   └── manifest.json # Extension configuration
+├── nginx/           # Nginx configuration
+└── docker-compose.yml # Docker configuration
 ```
 
 ## Contributing

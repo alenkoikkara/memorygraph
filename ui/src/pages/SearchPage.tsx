@@ -3,15 +3,27 @@ import SearchBar from "../components/SearchBar";
 import { getSearchResults } from "../services/api-service";
 
 interface SearchResult {
-  url: string;
-  title: string;
-  summary: string;
-  content: string;
-  created_at: string;
+  matches: {
+    url: string;
+    title: string;
+    summary: string;
+    content: string;
+    created_at: string;
+  }[];
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
 }
 
 const SearchPage = () => {
-  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchResult>({
+    matches: [],
+    total: 0,
+    page: 1,
+    page_size: 10,
+    total_pages: 1,
+  });
 
   const handleSearch = (searchTerm: string) => {
     getSearchResults(searchTerm).then(setSearchResults);
@@ -19,10 +31,10 @@ const SearchPage = () => {
 
   return (
     <div className="h-screen w-full flex flex-col items-center justify-center">
-      <div className="w-full max-w-md relative">
+      <div className="w-full max-w-md relative mb-[400px]">
         <SearchBar onSearch={handleSearch} />
         <div className="mt-4 px-2 w-full flex flex-col gap-4 absolute top-10 left-0">
-          {searchResults.map((result: SearchResult) => (
+          {searchResults.matches.map((result) => (
             <div
               key={result.created_at}
               className="cursor-pointer"
@@ -32,10 +44,18 @@ const SearchPage = () => {
             >
               <h2 className="text-md font-bold">{result.title}</h2>
               <p className="text-xs text-gray-500">{result.created_at}</p>
-              <p className="text-xs text-gray-500 line-clamp-2">{result.summary}</p>
+              <p className="text-xs text-gray-500 line-clamp-2">
+                {result.summary}
+              </p>
               <p className="text-xs text-gray-500">{result.content}</p>
             </div>
           ))}
+          <div className="mt-2 w-full flex flex-row items-center justify-between gap-4">
+            <h2 className="text-md font-bold">Page 1</h2>
+            <p className="text-xs text-gray-500">
+              {searchResults.total} results found
+            </p>
+          </div>
         </div>
       </div>
     </div>

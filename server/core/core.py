@@ -26,6 +26,23 @@ def create_record(original: str, processed: str) -> Record:
     insert_documents_with_keywords(record)
     return record
 
-def search_record(query: str):
+def search_record(query: str, page: int = 1, page_size: int = 5):
+    """
+    Perform semantic search with pagination.
+    
+    Args:
+        query: The search query string
+        page: Page number (1-based)
+        page_size: Number of results per page
+        
+    Returns:
+        dict: {
+            "matches": List of matching documents,
+            "total": Total number of results,
+            "page": Current page,
+            "page_size": Results per page,
+            "total_pages": Total number of pages
+        }
+    """
     embedding = generate_embedding(query)
-    return semantic_search(embedding)
+    return semantic_search(embedding, page, page_size)

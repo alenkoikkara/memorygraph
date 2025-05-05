@@ -42,12 +42,37 @@ def add_document(embedding, title, summary, content, created_at, tags):
         }]
     )
     
-def semantic_search(embedding, n_results=5):
-    # Query ChromaDB for nearest neighbors by embedding
+def semantic_search(embedding, page=1, page_size=5):
+    """
+    Perform semantic search with pagination.
+    
+    Args:
+        embedding: The embedding vector to search with
+        page: Page number (1-based)
+        page_size: Number of results per page
+        
+    Returns:
+        dict: {
+            "matches": List of matching documents,
+            "total": Total number of results,
+            "page": Current page,
+            "page_size": Results per page,
+            "total_pages": Total number of pages
+        }
+    """
+    # Get total count first
+    total = collection.count()
+    
+    # Calculate the range of results we need
+    start_idx = (page - 1) * page_size
+    end_idx = start_idx + page_size
+    
+    # Query ChromaDB for all results (we'll paginate them ourselves)
     results = collection.query(
         query_embeddings=[embedding],
-        n_results=n_results
+        n_results=total  # Get all results
     )
+    
     # Collect and return matching documents with metadata and distance
     matches = []
     for doc, metadata, dist in zip(
@@ -63,7 +88,18 @@ def semantic_search(embedding, n_results=5):
             "summary": metadata.get("summary"),
             "distance": dist
         })
+    
     # Results are sorted by increasing distance (i.e. most similar first)
     matches.sort(key=lambda x: x["distance"])
-    return matches
+    
+    # Apply pagination by slicing the results
+    paginated_matches = matches[start_idx:end_idx]
+    
+    return {
+        "matches": paginated_matches,
+        "total": total,
+        "page": page,
+        "page_size": page_size,
+        "total_pages": (total + page_size - 1) // page_size  # Ceiling division
+    }
 

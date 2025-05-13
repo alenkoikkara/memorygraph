@@ -31,7 +31,7 @@ const SearchPage = () => {
 
   return (
     <div className="h-screen w-full flex flex-col items-center justify-center">
-      <div className="w-full max-w-md relative mb-[400px]">
+      <div className="w-full max-w-md relative mb-[450px]">
         <SearchBar onSearch={handleSearch} />
         <div className="mt-4 px-2 w-full flex flex-col gap-4 absolute top-10 left-0">
           {searchResults.matches.map((result) => (
@@ -50,12 +50,6 @@ const SearchPage = () => {
               <p className="text-xs text-gray-500">{result.content}</p>
             </div>
           ))}
-          {/* <div className="mt-2 w-full flex flex-row items-center justify-between gap-4">
-            <h2 className="text-md font-bold">Page 1</h2>
-            <p className="text-xs text-gray-500">
-              {searchResults.total} results found
-            </p>
-          </div> */}
         </div>
       </div>
     </div>

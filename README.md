@@ -1,4 +1,4 @@
-# Memory Graph
+# Memento
 
 A full-stack application for processing, storing, and searching content with semantic search capabilities. The application consists of a FastAPI backend, React frontend, Chrome extension, and uses ChromaDB for vector storage.
 

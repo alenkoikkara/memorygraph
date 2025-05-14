@@ -40,6 +40,9 @@ jobs:
   deploy:
     needs: test
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ui
     if: github.ref == 'refs/heads/main'
     
     steps:

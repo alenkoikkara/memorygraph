@@ -40,17 +40,6 @@ jobs:
     - name: Check built UI files
       run: ls -la dist
 
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./ui
-    if: github.ref == 'refs/heads/main'
-    
-    steps:
-    - uses: actions/checkout@v4
-    
     - name: Install cloudflared
       run: |
         curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -o cloudflared
@@ -74,3 +63,5 @@ jobs:
     - name: Upload build via SCP manually
       run: |
         scp -r dist/** sshpi:/home/charlie/docker-data/memento/ui
+    
+    

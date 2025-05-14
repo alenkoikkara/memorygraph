@@ -38,7 +38,7 @@ jobs:
         VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
     - name: Check built UI files
-      run: ls -la ui/dist
+      run: ls -la dist
 
   deploy:
     needs: test

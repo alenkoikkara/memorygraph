@@ -2,7 +2,6 @@ import datetime
 from services.cohere import generate_keywords, generate_embedding
 from utils.utils import prepare_embedding_text
 from models.record import Record
-from services.arangodb import insert_documents_with_keywords
 from services.chromadb import add_document, semantic_search
 
 def create_record(original: str, processed: str) -> Record:
@@ -23,7 +22,6 @@ def create_record(original: str, processed: str) -> Record:
     )
     
     add_document(embedding, record.title, record.summary, record.original_content, record.created_at, record.keywords)
-    insert_documents_with_keywords(record)
     return record
 
 def search_record(query: str, page: int = 1, page_size: int = 5):
@@ -45,4 +43,4 @@ def search_record(query: str, page: int = 1, page_size: int = 5):
         }
     """
     embedding = generate_embedding(query)
-    return semantic_search(embedding, page, page_size)
+    return semantic_search(embedding)

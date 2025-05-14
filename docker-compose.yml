@@ -2,10 +2,8 @@ version: '3.8'
 
 services:
   app:
-    container_name: memorygraph_backend
-    build: 
-      context: ./server
-      dockerfile: Dockerfile
+    container_name: memento-backend
+    image: ghcr.io/alenkoikkara/memorygraph/memento-backend:latest
     ports:
       - "8001:8001"
     volumes:
@@ -19,19 +17,6 @@ services:
       - app-network
     depends_on:
       - chromadb
-
-  arangodb:
-    image: arangodb/arangodb:3.12.4 
-    container_name: arangodb
-    ports:
-      - "8529:8529"
-    environment:
-      - ARANGO_ROOT_PASSWORD=root
-    volumes:
-      - arangodb_data:/var/lib/arangodb
-    networks:
-      - app-network
-    restart: unless-stopped
 
   nginx:
     build: 
@@ -76,9 +61,8 @@ services:
       - app-network
 
 volumes:
-  arangodb_data:
   nginx_data:
-  memorygraph_backend_data:
+  memento_data:
   chroma_data:
 
 networks:

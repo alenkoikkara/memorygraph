@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from api.routes import router
-from services.arangodb import initialize_database
 from services.chromadb import initialize_chroma
 import os
 from dotenv import load_dotenv
@@ -45,7 +44,6 @@ def create_app() -> FastAPI:
     
     # Initialize database
     initialize_chroma()
-    initialize_database()
     # Include API router
     app.include_router(router)
     

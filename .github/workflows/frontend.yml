@@ -38,6 +38,7 @@ jobs:
         VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
   deploy:
+    needs: test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     

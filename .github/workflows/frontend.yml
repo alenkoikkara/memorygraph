@@ -37,6 +37,9 @@ jobs:
       env:
         VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
+    - name: Check built UI files
+      run: ls -la ui/dist
+
   deploy:
     needs: test
     runs-on: ubuntu-latest

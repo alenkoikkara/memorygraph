@@ -67,4 +67,4 @@ jobs:
 
     - name: Upload build via SCP manually
       run: |
-        scp -r ui/dist/** sshpi:/home/charlie/docker-data/memento/ui
+        scp -r dist/** sshpi:/home/charlie/docker-data/memento/ui

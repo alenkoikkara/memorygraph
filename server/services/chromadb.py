@@ -1,7 +1,5 @@
-from arango import ArangoClient
 import os
 from dotenv import load_dotenv
-from models.record import Record
 import chromadb
 from datetime import datetime
 # Load environment variables

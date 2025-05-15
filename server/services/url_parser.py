@@ -1,5 +1,4 @@
-from urllib.parse import urlparse, parse_qs, unquote
-from typing import Dict, List, Optional, Tuple
+from typing import Dict
 import requests
 from bs4 import BeautifulSoup
 import re

@@ -1,13 +1,13 @@
 version: '3.8'
 
 services:
-  app:
-    container_name: memorygraph_backend
+  memento-backend:
+    container_name: memento-backend
     image: ghcr.io/alenkoikkara/memorygraph/memento-backend:latest@sha256:9b06fa2b105792f85641ae33bfae704a828634808f987ddb4ada5689774cc18b
     ports:
       - "8001:8001"
     volumes:
-      - ./server:/app
+      - ./server:/memento-backend
     environment:
       - PYTHONUNBUFFERED=1
       - CHROMA_HOST=chromadb
@@ -62,7 +62,7 @@ services:
 
 volumes:
   nginx_data:
-  memorygraph_backend_data:
+  memento-backend_data:
   chroma_data:
 
 networks:

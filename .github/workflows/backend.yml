@@ -41,7 +41,9 @@ jobs:
         file: ./server/Dockerfile
         push: true
         platforms: linux/arm64
-        tags: ghcr.io/alenkoikkara/memento-backend:latest
+        tags: |
+          ghcr.io/alenkoikkara/memento-backend:latest
+          ghcr.io/alenkoikkara/memento-backend:${{ github.sha }}
     
         
     # - name: Deploy to ECS

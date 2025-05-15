@@ -46,3 +46,16 @@ jobs:
         tags: |
           ghcr.io/alenkoikkara/memento-backend:latest
           ghcr.io/alenkoikkara/memento-backend:${{ github.sha }}
+
+    - name: Setup SSH key
+      uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ secrets.SSH_KEY }}
+
+    - name: Pull latest backend image and restart container on Pi
+      run: |
+        ssh -o StrictHostKeyChecking=no charlie@10.0.0.94 << 'EOF'
+          cd /home/charlie  # your actual path
+          docker compose pull memento-backend
+          docker compose up -d --force-recreate --no-deps memento-backend
+        EOF

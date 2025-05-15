@@ -47,15 +47,31 @@ jobs:
           ghcr.io/alenkoikkara/memento-backend:latest
           ghcr.io/alenkoikkara/memento-backend:${{ github.sha }}
 
-    - name: Setup SSH key
-      uses: webfactory/ssh-agent@v0.9.0
-      with:
-        ssh-private-key: ${{ secrets.SSH_KEY }}
-
-    - name: Pull latest backend image and restart container on Pi
+    - name: Install cloudflared
       run: |
-        ssh -o StrictHostKeyChecking=no charlie@10.0.0.94 << 'EOF'
-          cd /home/charlie  # your actual path
+        curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -o cloudflared
+        chmod +x cloudflared
+        sudo mv cloudflared /usr/local/bin/
+
+    - name: Setup SSH Key and Config
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+
+        cat <<EOF > ~/.ssh/config
+        Host sshpi
+          User charlie
+          HostName sshpi.alenkoikkara.com
+          IdentityFile ~/.ssh/id_rsa
+          ProxyCommand cloudflared access tcp --hostname %h
+          StrictHostKeyChecking no
+        EOF
+
+    - name: Restart backend on Pi
+      run: |
+        ssh sshpi <<'EOF'
+          cd /home/charlie
           docker compose pull memento-backend
-          docker compose up -d --force-recreate --no-deps memento-backend
+          docker compose up -d --no-deps --force-recreate memento-backend
         EOF

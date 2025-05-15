@@ -31,10 +31,13 @@ jobs:
       id: get_version
       run: |
         if [[ $GITHUB_REF == refs/tags/* ]]; then
-          echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          VERSION="${GITHUB_REF#refs/tags/}"
         else
-          echo "VERSION=dev-${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+          VERSION="dev-${GITHUB_SHA::7}"
         fi
+        echo "VERSION=$VERSION"
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
@@ -58,7 +61,7 @@ jobs:
         platforms: linux/amd64,linux/arm64
         tags: |
           ghcr.io/alenkoikkara/memento-backend:latest
-          ghcr.io/alenkoikkara/memento-backend:${{ steps.get_version.outputs.VERSION }}
+          ghcr.io/alenkoikkara/memento-backend:${{ steps.get_version.outputs.version }}
           ghcr.io/alenkoikkara/memento-backend:${{ github.sha }}
 
     - name: Install cloudflared

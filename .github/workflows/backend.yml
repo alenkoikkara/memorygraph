@@ -6,6 +6,8 @@ on:
     paths:
       - 'server/**'
       - '.github/workflows/backend.yml'
+    tags:
+      - 'v*'
   pull_request:
     branches: [ main ]
     paths:
@@ -22,6 +24,17 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Get version
+      id: get_version
+      run: |
+        if [[ $GITHUB_REF == refs/tags/* ]]; then
+          echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        else
+          echo "VERSION=dev-${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+        fi
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
@@ -45,6 +58,7 @@ jobs:
         platforms: linux/amd64,linux/arm64
         tags: |
           ghcr.io/alenkoikkara/memento-backend:latest
+          ghcr.io/alenkoikkara/memento-backend:${{ steps.get_version.outputs.VERSION }}
           ghcr.io/alenkoikkara/memento-backend:${{ github.sha }}
 
     - name: Install cloudflared

@@ -3,9 +3,7 @@ version: '3.8'
 services:
   app:
     container_name: memorygraph_backend
-    build: 
-      context: ./server
-      dockerfile: Dockerfile
+    image: ghcr.io/alenkoikkara/memorygraph/memento-backend:latest@sha256:9b06fa2b105792f85641ae33bfae704a828634808f987ddb4ada5689774cc18b
     ports:
       - "8001:8001"
     volumes:

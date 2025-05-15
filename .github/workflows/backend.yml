@@ -2,14 +2,14 @@ name: Backend CI/CD
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
     paths:
       - 'server/**'
       - '.github/workflows/backend.yml'
     tags:
       - 'v*'
   pull_request:
-    branches: [main]
+    branches: [ main ]
     paths:
       - 'server/**'
       - '.github/workflows/backend.yml'
@@ -45,14 +45,6 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
-    - name: Cache Docker layers
-      uses: actions/cache@v4
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-
-
     - name: Login to GitHub Container Registry
       uses: docker/login-action@v3
       with:
@@ -66,30 +58,17 @@ jobs:
         context: ./server
         file: ./server/Dockerfile
         push: true
-        platforms: ${{ startsWith(github.ref, 'refs/tags/') && 'linux/amd64,linux/arm64' || 'linux/amd64' }}
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache
+        platforms: linux/amd64,linux/arm64
         tags: |
           ghcr.io/alenkoikkara/memento-backend:latest
           ghcr.io/alenkoikkara/memento-backend:${{ steps.get_version.outputs.version }}
           ghcr.io/alenkoikkara/memento-backend:${{ github.sha }}
 
-    - name: Cache cloudflared
-      id: cache-cloudflared
-      uses: actions/cache@v4
-      with:
-        path: ~/.cloudflared
-        key: cloudflared-${{ runner.os }}
-
     - name: Install cloudflared
-      if: steps.cache-cloudflared.outputs.cache-hit != 'true'
       run: |
-        mkdir -p ~/.cloudflared
-        curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -o ~/.cloudflared/cloudflared
-        chmod +x ~/.cloudflared/cloudflared
-
-    - name: Move cloudflared to PATH
-      run: sudo cp ~/.cloudflared/cloudflared /usr/local/bin/cloudflared
+        curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -o cloudflared
+        chmod +x cloudflared
+        sudo mv cloudflared /usr/local/bin/
 
     - name: Setup SSH Key and Config
       run: |
@@ -97,19 +76,19 @@ jobs:
         echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
 
-        ssh-keyscan -H sshpi.alenkoikkara.com >> ~/.ssh/known_hosts
-
         cat <<EOF > ~/.ssh/config
         Host sshpi
           User charlie
           HostName sshpi.alenkoikkara.com
           IdentityFile ~/.ssh/id_rsa
           ProxyCommand cloudflared access tcp --hostname %h
+          StrictHostKeyChecking no
         EOF
 
     - name: Restart backend on Pi
       run: |
         ssh sshpi <<'EOF'
           cd /home/charlie
-          docker compose up -d --no-deps --force-recreate --pull=missing memento-backend
+          docker compose pull memento-backend
+          docker compose up -d --no-deps --force-recreate memento-backend
         EOF

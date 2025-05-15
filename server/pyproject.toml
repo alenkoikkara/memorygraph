@@ -7,7 +7,7 @@ name = "memorygraph"
 version = "1.0.0"
 description = "API for processing and storing content summaries"
 authors = [
-    {name = "Alen Koikkara", email = "alendennis@gmail.com"}
+    {name = "Alen Koikkara", email = "alendennisd@gmail.com"}
 ]
 dependencies = [
     "fastapi",

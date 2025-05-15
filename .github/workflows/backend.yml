@@ -16,6 +16,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
+    defaults:
+      run:
+        working-directory: ./server
     permissions:
       contents: read
       packages: write

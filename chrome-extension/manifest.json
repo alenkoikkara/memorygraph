@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Memory Graph Saver",
   "version": "1.0",
-  "description": "Save URLs to Memory Graph",
+  "name": "Memento Saver",
+  "description": "Save URLs to Memento",
   "permissions": [
     "activeTab",
     "scripting"

@@ -1,7 +1,17 @@
 import cohere
 import json
+import os
+from dotenv import load_dotenv
 
-co = cohere.ClientV2("l8TM7tpRohn5DrsdxXQEI54zTAJQHuxLxPxkqgqE")
+# Load environment variables
+load_dotenv()
+
+# Get Cohere API key from environment
+COHERE_API_KEY = os.getenv("COHERE_API_KEY")
+if not COHERE_API_KEY:
+    raise ValueError("COHERE_API_KEY environment variable is not set")
+
+co = cohere.ClientV2(COHERE_API_KEY)
 
 def generate_keywords(text: str) -> dict:
     response = co.generate(
@@ -31,11 +41,7 @@ def generate_keywords(text: str) -> dict:
         print(f"Error parsing JSON: {e}")
         print(f"Generated text: {generated_text}")
         # Return a default response in case of parsing error
-        return {
-            "summary": "Error generating summary",
-            "keywords": [],
-            "title": "Error generating title"
-        }
+        print(f"Error: {e}")
 
 def generate_embedding(text: str) -> list[float]:
     response = co.embed(

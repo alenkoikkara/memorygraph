@@ -1,7 +1,7 @@
 {
-  "name": "memory-graph-saver-extension",
+  "name": "memento-saver-extension",
   "version": "1.0.0",
-  "description": "Chrome extension for saving URLs to Memory Graph",
+  "description": "Chrome extension for saving URLs to Memento",
   "scripts": {
     "generate-icons": "node generate-icons.js"
   },

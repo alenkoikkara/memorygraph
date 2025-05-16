@@ -7,12 +7,12 @@ A full-stack application for processing, storing, and searching content with sem
 - **Content Processing**
   - URL content extraction with intelligent text parsing
   - Direct text input processing
-  - Automatic content summarization and keyword extraction
+  - Automatic content summarization and keyword extraction using Cohere AI
 
 - **Semantic Search**
   - Vector-based semantic search using ChromaDB
-  - Pagination support for search results
-  - Debounced search input for better performance
+  - Real-time search results
+  - Efficient content retrieval
 
 - **Chrome Extension**
   - One-click URL saving
@@ -22,7 +22,7 @@ A full-stack application for processing, storing, and searching content with sem
 - **Modern Web Interface**
   - Responsive design with Tailwind CSS
   - Client-side routing with React Router
-  - Debounced search functionality
+  - Real-time search functionality
   - Clean and intuitive user interface
 
 ## Architecture
@@ -34,21 +34,24 @@ The application is built using a microservices architecture with the following c
   - Content processing and storage
   - Semantic search functionality
   - CORS support for cross-origin requests
+  - Cohere AI integration for content analysis
 
 - **Frontend (React)**
   - Modern UI with Tailwind CSS
   - Client-side routing
   - Responsive design
   - API integration
+  - Environment-based configuration
 
 - **Chrome Extension**
   - Browser integration
   - URL saving functionality
   - User-friendly interface
+  - Secure API communication
 
 - **Database**
-  - ChromaDB for vector storage
-  - ArangoDB for document storage
+  - ChromaDB for vector storage and semantic search
+  - Persistent storage with Docker volumes
 
 ## Prerequisites
 
@@ -56,6 +59,21 @@ The application is built using a microservices architecture with the following c
 - Node.js 20 or higher
 - Python 3.11 or higher
 - Chrome browser (for extension)
+- Cohere AI API key
+
+## Environment Variables
+
+### Backend (.env)
+```
+COHERE_API_KEY=your_cohere_api_key
+CHROMA_HOST=chromadb
+CHROMA_PORT=8000
+```
+
+### Frontend (.env)
+```
+VITE_BACKEND_BASE_URL=http://localhost:8001/api
+```
 
 ## Installation
 
@@ -67,7 +85,11 @@ git clone <repository-url>
 cd <repository-directory>
 ```
 
-2. Build and run using Docker Compose:
+2. Set up environment variables:
+   - Create `.env` file in the server directory with required variables
+   - Create `.env` file in the ui directory with required variables
+
+3. Build and run using Docker Compose:
 ```bash
 docker-compose up --build
 ```
@@ -93,7 +115,13 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-3. Run the application:
+3. Set up environment variables:
+```bash
+cp .env.example .env
+# Edit .env with your configuration
+```
+
+4. Run the application:
 ```bash
 uvicorn main:app --reload
 ```
@@ -106,7 +134,13 @@ cd ui
 npm install
 ```
 
-2. Run the development server:
+2. Set up environment variables:
+```bash
+cp .env.example .env
+# Edit .env with your configuration
+```
+
+3. Run the development server:
 ```bash
 npm run dev
 ```
@@ -134,8 +168,6 @@ npm run dev
   - Search content with semantic search
   - Query Parameters:
     - `query`: Search query string
-    - `page`: Page number (default: 1)
-    - `limit`: Results per page (default: 10)
 
 ## Project Structure
 
@@ -158,14 +190,26 @@ npm run dev
 └── docker-compose.yml # Docker configuration
 ```
 
-## Contributing
+## Development Workflow
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. Create a new branch for your feature:
+```bash
+git checkout -b feature/your-feature-name
+```
 
-## License
+2. Make your changes and commit them:
+```bash
+git add .
+git commit -m "Description of your changes"
+```
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+3. Push your branch and create a Pull Request:
+```bash
+git push origin feature/your-feature-name
+```
+
+4. The CI/CD pipeline will automatically:
+   - Build and test your changes
+   - Create Docker images
+   - Deploy to staging (if configured)
+

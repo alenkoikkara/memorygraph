@@ -6,17 +6,9 @@ on:
     paths:
       - 'ui/**'
       - '.github/workflows/frontend.yml'
-  pull_request:
-    branches: [ main ]
-    paths:
-      - 'ui/**'
-      - '.github/workflows/frontend.yml'
-    types: [closed]
 
 jobs:
   deploy:
-    # Only run on main branch or when PR is merged
-    if: (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
     defaults:
       run:

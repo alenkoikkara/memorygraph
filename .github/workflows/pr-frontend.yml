@@ -1,4 +1,4 @@
-name: Frontend CI/CD
+name: PR frontend lint
 
 on:
   pull_request:

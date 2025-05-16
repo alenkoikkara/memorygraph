@@ -1,12 +1,11 @@
 name: Backend CI/CD
 
 on:
-  pull_request:
+  push:
     branches: [ main ]
     paths:
-      - 'server/**'
-      - '.github/workflows/backend.yml'
-    types: [opened, synchronize, reopened]
+      - 'ui/**'
+      - '.github/workflows/frontend.yml'
 
 jobs:
   deploy:

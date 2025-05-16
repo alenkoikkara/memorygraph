@@ -1,12 +1,11 @@
 name: Frontend CI/CD
 
 on:
-  pull_request:
+  push:
     branches: [ main ]
     paths:
       - 'ui/**'
       - '.github/workflows/frontend.yml'
-    types: [opened, synchronize, reopened]
 
 jobs:
   deploy:

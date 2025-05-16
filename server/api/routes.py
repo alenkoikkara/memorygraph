@@ -26,25 +26,18 @@ async def process_content(content: ContentInput) -> Record:
 
 @router.get("/api/search")
 async def search(
-    query: str = Query(..., description="The search query to find relevant documents"),
-    page: int = Query(1, description="Page number (1-based)"),
-    page_size: int = Query(5, description="Number of results per page")
+    query: str = Query(..., description="The search query to find relevant documents")
 ):
     """
-    Perform semantic search on the content database with pagination.
+    Perform semantic search on the content database.
 
     Args:
         query: The search query string (passed as URL parameter)
-        page: Page number (1-based)
-        page_size: Number of results per page
-        
+
     Returns:
         Dict[str, Any]: {
             "matches": List of matching documents,
             "total": Total number of results,
-            "page": Current page,
-            "page_size": Results per page,
-            "total_pages": Total number of pages
         }
     """
-    return search_record(query, page, page_size)
+    return search_record(query)

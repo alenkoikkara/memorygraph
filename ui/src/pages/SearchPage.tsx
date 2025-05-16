@@ -34,20 +34,20 @@ const SearchPage = () => {
       <div className="w-full max-w-md relative mb-[450px]">
         <SearchBar onSearch={handleSearch} />
         <div className="mt-4 px-2 w-full flex flex-col gap-4 absolute top-10 left-0">
-          {searchResults.matches.map((result) => (
+          {searchResults?.matches?.map((result) => (
             <div
-              key={result.created_at}
+              key={result?.created_at}
               className="cursor-pointer"
               onClick={() => {
-                window.open(result.url, "_blank");
+                window.open(result?.url, "_blank");
               }}
             >
-              <h2 className="text-md font-bold">{result.title}</h2>
-              <p className="text-xs text-gray-500">{result.created_at}</p>
+              <h2 className="text-md font-bold">{result?.title}</h2>
+              <p className="text-xs text-gray-500">{result?.created_at}</p>
               <p className="text-xs text-gray-500 line-clamp-2">
-                {result.summary}
+                {result?.summary}
               </p>
-              <p className="text-xs text-gray-500">{result.content}</p>
+              <p className="text-xs text-gray-500">{result?.content}</p>
             </div>
           ))}
         </div>

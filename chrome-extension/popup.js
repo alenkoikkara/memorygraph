@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       // Send the URL to the API
-      const response = await fetch('http://localhost/api/process', {
+      const response = await fetch('https://memorygraph.alenkoikkara.com/api/process', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

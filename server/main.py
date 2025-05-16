@@ -24,7 +24,7 @@ def create_app() -> FastAPI:
     allowed_origins = [
         "https://memorygraph.alenkoikkara.com",  # Production domain
         "https://www.memorygraph.alenkoikkara.com",  # Production domain with www
-        "chrome-extension://fmlccacimliaejecjkkhegmfmhgnfkok"  # Specific Chrome extension ID
+        "chrome-extension://fmlccacimliaejecjkkhegmfmhgnfkok"
     ]
     
     app.add_middleware(

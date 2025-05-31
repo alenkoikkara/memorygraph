@@ -13,7 +13,7 @@ async def root() -> Dict[str, str]:
 @router.put("/api/process")
 async def process_content(content: ContentInput) -> Record:
     """
-    Process content and return a record with summary, keywords, and title.
+    Process contents and return a record with summary, keywords, and title.
     
     Args:
         content: ContentInput object containing either URL or text content

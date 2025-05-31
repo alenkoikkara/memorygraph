@@ -31,7 +31,7 @@ const SearchPage = () => {
 
   return (
     <div className="h-screen w-full flex flex-col items-center justify-center">
-      <div className="w-full max-w-md relative mb-[450px]">
+      <div className="w-full max-w-md relative mb-[450px] px-4">
         <SearchBar onSearch={handleSearch} />
         <div className="mt-4 px-2 w-full flex flex-col gap-4 absolute top-10 left-0">
           {searchResults?.matches?.map((result) => (

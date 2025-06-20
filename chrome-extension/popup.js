@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       // Send the URL to the API
-      const response = await fetch('https://memorygraph.alenkoikkara.com/api/process', {
+      const response = await fetch('add your public api url here', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
